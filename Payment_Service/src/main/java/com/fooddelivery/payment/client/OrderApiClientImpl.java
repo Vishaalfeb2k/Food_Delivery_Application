@@ -1,0 +1,28 @@
+package com.fooddelivery.payment.client;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Controller
+public class OrderApiClientImpl implements OrderApiClient
+{
+    @Autowired
+    private RestTemplate restTemplate;
+
+    public void updateOrderStatus(long orderId,String orderStatus)
+    {
+        String url="http://localhost:8080/OrderStatus/{orderId}";
+        Map<String,Integer> urlparams=new HashMap<>();
+        urlparams.put("orderId", (int) orderId);
+        UriComponentsBuilder builder=UriComponentsBuilder.fromUriString(url);
+        restTemplate.exchange(builder.buildAndExpand(urlparams).toUri(), HttpMethod.PUT, new HttpEntity<>("PAYMENT_SUCCESS"),String.class);
+    }
+
+}
